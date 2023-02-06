@@ -6,6 +6,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import TextRecognition from '@react-native-ml-kit/text-recognition';
 import axios from 'axios'
 import { baseUrl } from "../utilities/api/baseUrl";
+import localStorage from '@react-native-async-storage/async-storage'
 
 export default function Prescription() {
 
@@ -53,17 +54,25 @@ export default function Prescription() {
 
         setLoading(true)
 
+          const userid = await localStorage.getItem("id")
+          axios.put(`${baseUrl}/user/record/` + (userid),
+            { prescription: "ahmad",  }).then((res) => {
+              console.log(res,"res");
+            })
+            .catch((err)=>{
+              console.log(err,"err");
+            })
 
-        axios.post(`${baseUrl}/patient/medicine/addMedicine`, { medicines: array })
-          .then((resp) => {
+        // axios.post(`${baseUrl}/patient/medicine/addMedicine`, { medicines: array })
+        //   .then((resp) => {
 
-            if (resp?.status == 200) {
-              Alert.alert("Progress", "Data Saved Succesfully")
-            }
-          })
-          .catch((err) => {
-            console.log(err, "error");
-          })
+        //     if (resp?.status == 200) {
+        //       Alert.alert("Progress", "Data Saved Succesfully")
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     console.log(err, "error");
+        //   })
 
         setLoading(false)
 

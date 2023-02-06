@@ -20,30 +20,33 @@ export default function AccountInfoDoc({navigation}) {
   
 
 
-  const userid = localStorage.getItem("id").then(resp => resp).catch((err)=>console.log(err));
-
   const [user,setUser] = useState();
+
+  const getAccountInfo = async()=>{
+
+    const userid = await localStorage.getItem("id")
+
+    axios.get(`${baseUrl}/doctor/`+(userid)).then((res)=>
+    {
+      setUser(res.data);
+      setSpeciality(res.data.speciality);
+      setTiming(res.data.timing);
+      setHospital(res.data.hospital);
+      setDays(res.data.days);
+
+
+    })
+  }
+
   useEffect(()=>{
 
-    if(userid){
-
-      axios.get(`${baseUrl}/doctor/`+(userid)).then((res)=>
-      {
-        setUser(res.data);
-        setSpeciality(res.data.speciality);
-        setTiming(res.data.timing);
-        setHospital(res.data.hospital);
-        setDays(res.data.days);
-  
-  
-      })
-
-    }
+    getAccountInfo()
 
 
-    },[userid]);
+    },[]);
 
-    const updateRec = () =>{
+    const updateRec = async() =>{
+      const userid = await localStorage.getItem("id")
       axios.put(`${baseUrl}/doctor/record/`+(userid),
       {name:name,email:email,password:password,speciality:speciality,timing:timing,hospital:hospital,days:days}).then((res)=>
       {
