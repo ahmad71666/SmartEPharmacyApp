@@ -47,7 +47,6 @@ export default function Prescription() {
 
 
   const uploadText = async (array) => {
-
     try {
 
       if (array.length > 0) {
@@ -56,23 +55,13 @@ export default function Prescription() {
 
           const userid = await localStorage.getItem("id")
           axios.put(`${baseUrl}/user/record/` + (userid),
-            { prescription: "ahmad",  }).then((res) => {
+            { prescription: array?.toString(),  }).then((res) => {
               console.log(res,"res");
+              Alert.alert("Success", "Data Upated")
             })
             .catch((err)=>{
               console.log(err,"err");
             })
-
-        // axios.post(`${baseUrl}/patient/medicine/addMedicine`, { medicines: array })
-        //   .then((resp) => {
-
-        //     if (resp?.status == 200) {
-        //       Alert.alert("Progress", "Data Saved Succesfully")
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log(err, "error");
-        //   })
 
         setLoading(false)
 
