@@ -8,6 +8,7 @@ const img_src = require('../assets/background.jpg')
 import { styles } from './styles';
 import axios from "axios";
 import localStorage from '@react-native-async-storage/async-storage'
+import { baseUrl } from '../utilities/api/baseUrl';
 
 export default function PatientProfile({navigation}) {
   const [name,setName] = useState();
@@ -22,7 +23,7 @@ export default function PatientProfile({navigation}) {
   console.log(userid)
   const [user,setUser] = useState();
   useEffect(()=>{
-    axios.get("http://localhost:3000/user/"+(userid)).then((res)=>
+    axios.get(`${baseUrl}/user/`+(userid)).then((res)=>
     {
       setUser(res.data);
       setDisease(res.data.disease);
@@ -34,7 +35,7 @@ export default function PatientProfile({navigation}) {
 
 
     const updateRec = () =>{
-    axios.put("http://localhost:3000/user/record/"+(userid),
+    axios.put(`${baseUrl}/user/record/`+(userid),
     {name:name,email:email,password:password,disease:disease,allergies:allergies,medicines:medicine}).then((res)=>
     {
       console.log(res.data)

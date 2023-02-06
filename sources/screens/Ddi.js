@@ -10,6 +10,7 @@ import axios from 'axios';
 
 
 import { styles } from './styles';
+import { baseUrl } from '../utilities/api/baseUrl';
 //const img_src = require('../assets/background.jpg')
 
 export default function Ddi({navigation}) {
@@ -23,7 +24,7 @@ export default function Ddi({navigation}) {
   const [response,setResponse] = useState();
   
   async function DTD(){
-      axios.post("http://localhost:3000/patient/drugtodrug",{drug1:Drug1,drug2:Drug2}).then((res) => {
+      axios.post(`${baseUrl}/patient/drugtodrug`,{drug1:Drug1,drug2:Drug2}).then((res) => {
         setResponse(res.data);
         setTimeout(() => {
           setIsLoading(false)

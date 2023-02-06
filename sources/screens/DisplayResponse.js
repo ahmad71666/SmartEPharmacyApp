@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Alert, ImageBackground, ScrollView, SafeAreaView,Modal } from 'react-native';
 import { styles } from './styles';
 import axios from "axios";
+import { baseUrl } from "../utilities/api/baseUrl";
 
 
 export default function DisplayResponse(item) {
@@ -12,7 +13,7 @@ export default function DisplayResponse(item) {
       };
     console.log("Hello from Display",item.obj);
     useEffect(()=>{
-    axios.get("http://localhost:3000/doctor/"+item.obj).then((res) => {
+    axios.get(`${baseUrl}/doctor/`+item.obj).then((res) => {
           setResponse(res.data);
           console.log(res.data)
           displayModal(true);

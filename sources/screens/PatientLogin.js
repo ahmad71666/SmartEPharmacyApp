@@ -42,7 +42,7 @@ export default function PatientLogin({ navigation }) {
     //     Password: Password
     //   }
 
-    //   let result = await fetch("http://localhost:8080/esmart/LoggedInSpecialist.php",
+      // let result = await fetch(`${baseUrl}/esmart/LoggedInSpecialist.php`,
     //     {
     //       mode: 'no-cors',
     //       method: "Post",

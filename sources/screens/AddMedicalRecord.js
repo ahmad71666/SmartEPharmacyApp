@@ -7,6 +7,7 @@ const bkimage = require('../assets/background.jpg')
 import PatientLogin from './PatientLogin'
 import MedicalRecord from './MedicalRecord'
 import { styles } from './styles';
+import { baseUrl } from '../utilities/api/baseUrl';
 
 
 export default function AddMedicalRecord({navigation}) {
@@ -58,7 +59,7 @@ export default function AddMedicalRecord({navigation}) {
     };
 
 
-    var apiUrl="http://localhost:8080/esmart/insertPatientMedicalRecord.php";
+    var apiUrl=`${baseUrl}/esmart/insertPatientMedicalRecord.php`;
 
 
    let result = await  fetch(

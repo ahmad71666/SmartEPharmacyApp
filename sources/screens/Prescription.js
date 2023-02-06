@@ -5,6 +5,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import TextRecognition from '@react-native-ml-kit/text-recognition';
 import axios from 'axios'
+import { baseUrl } from "../utilities/api/baseUrl";
 
 export default function Prescription() {
 
@@ -19,61 +20,62 @@ export default function Prescription() {
 
     try {
 
-        if (!media.didCancel) {
+      if (!media.didCancel) {
 
-            const result = await TextRecognition.recognize(media?.assets[0]?.uri);
+        const result = await TextRecognition.recognize(media?.assets[0]?.uri);
 
-            for (let block of result.blocks) {
+        for (let block of result.blocks) {
 
-                for (let line of block.lines) {
-                    array.push(line.text)
-                }
-
-            }
-
-            let printArray = array.map((i) => i + "\n")
-
-            Alert.alert('Recognized Text', printArray.toString(), [{ text: 'Upload', onPress: () => { uploadText(array) }, style: 'cancel' }, { text: 'Cancel', onPress: () => { } },], { cancelable: true });
+          for (let line of block.lines) {
+            array.push(line.text)
+          }
 
         }
 
+        let printArray = array.map((i) => i + "\n")
+
+        Alert.alert('Recognized Text', printArray.toString(), [{ text: 'Upload', onPress: () => { uploadText(array) }, style: 'cancel' }, { text: 'Cancel', onPress: () => { } },], { cancelable: true });
+
+      }
+
     } catch (error) {
-        console.log(error, "error");
+      console.log(error, "error");
     }
 
-};
+  };
 
 
-const uploadText = async (array, setLoading) => {
+  const uploadText = async (array) => {
 
-    // try {
+    try {
 
-    //     if (array.length > 0) {
+      if (array.length > 0) {
 
-    //         setLoading(true)
+        setLoading(true)
 
-    //         postData("http://192.168.10.12:5000/api/medicine/addMedicine", { medicines: array })
-    //             .then((resp) => {
 
-    //                 if (resp?.error == false) {
-    //                     Alert.alert("Progress", "Data Saved Succesfully")
-    //                 }
-    //             })
-    //             .catch((err) => {
-    //                 console.log(err, "error");
-    //             })
+        axios.post(`${baseUrl}/patient/medicine/addMedicine`, { medicines: array })
+          .then((resp) => {
 
-    //         setLoading(false)
+            if (resp?.status == 200) {
+              Alert.alert("Progress", "Data Saved Succesfully")
+            }
+          })
+          .catch((err) => {
+            console.log(err, "error");
+          })
 
-    //     } else {
-    //         Alert.alert("Error", "No Scanned Data")
-    //     }
+        setLoading(false)
 
-    // } catch (error) {
-    //     console.log(error, "error");
-    // }
+      } else {
+        Alert.alert("Error", "No Scanned Data")
+      }
 
-}
+    } catch (error) {
+      console.log(error, "error");
+    }
+
+  }
 
   return (
     <View style={Theme.container}>

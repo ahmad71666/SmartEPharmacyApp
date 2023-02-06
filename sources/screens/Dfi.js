@@ -7,6 +7,7 @@ import { styles } from './styles';
 import Patient from './Patient';
 import Icon2 from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
+import { baseUrl } from '../utilities/api/baseUrl';
 
 //const img_src = require('../assets/background.jpg')
 
@@ -21,7 +22,7 @@ export default function Dfi({navigation}) {
   const [response,setResponse] = useState();
 
   async function DTF(){
-    axios.post("http://localhost:3000/patient/drugtofood",{drug:Drug,food:Food}).then((res) => {
+    axios.post(`${baseUrl}/patient/drugtofood`,{drug:Drug,food:Food}).then((res) => {
         setResponse(res.data);
         setTimeout(() => {
           setIsLoading(false)

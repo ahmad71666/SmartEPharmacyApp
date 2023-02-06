@@ -4,6 +4,7 @@ import { TouchableOpacity,ImageBackground,TextInput, SafeAreaView, StyleSheet, T
 import DoctorLogin from './DoctorLogin';
 import axios from "axios";
 import { styles } from './styles';
+import { baseUrl } from '../utilities/api/baseUrl';
 
 const bkimage = require('../assets/background.jpg')
 
@@ -20,7 +21,7 @@ export default function NewAccount({navigation}) {
 
   const newDoctor = ()=>{
 
-      axios.post('http://localhost:3000/doctor/signup',{
+      axios.post(`${baseUrl}/doctor/signup`,{
         name:name,
         email:email,
         password:password,

@@ -1,37 +1,48 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, ImageBackground, TextInput, SafeAreaView, Text, View } from 'react-native';
 import NewAccount from './NewAccount';
 import DoctorHomePage from './DoctorHomePage';
 import { styles } from './styles';
 import axios from 'axios';
 import localStorage from '@react-native-async-storage/async-storage'
+import { baseUrl } from '../utilities/api/baseUrl';
+
 const image = require('../assets/background.jpg')
 
 export default function DoctorLogin({ navigation }) {
-  useEffect(()=>{
-    if(localStorage.getItem('token') != null)
-    {
-      navigation.navigate(DoctorHomePage);
-    }
-  });
+
+  const checkToken = async () => {
+    localStorage.getItem('token')
+      .then((resp) => {
+        if (resp != null) {
+          navigation.navigate(DoctorHomePage);
+        }
+      })
+    // if (token != null) {
+
+    // }
+  }
+
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
 
-  async function SpecialistLogin() {
-    axios.post('http://localhost:3000/doctor/login',{
-        email:email,
-        password:password
-      }).then((response)=>{
-        console.log(response.data);
-        localStorage.setItem('token',response.data.accessToken);
-        localStorage.setItem('id',response.data.register._id);
+  const SpecialistLogin = async () => {
+    axios.post(`${baseUrl}/doctor/login`, {
+      email: email,
+      password: password
+    }).then(async (response) => {
+      console.log(response.data);
+      await localStorage.setItem('token', response.data.accessToken);
+      await localStorage.setItem('id', response.data.register._id);
 
-        if(localStorage.getItem('token')!= null){
-          navigation.navigate(DoctorHomePage);
-        }
-      }).catch((error)=>{
-      });
+      if (localStorage.getItem('token') != null) {
+        navigation.navigate(DoctorHomePage);
+      }
+    }).catch((error) => {
+      console.log(error, "error");
+    });
     // var data = {
     //   Email: Email,
     //   Password: Password
@@ -57,7 +68,11 @@ export default function DoctorLogin({ navigation }) {
     //   Alert.alert("Invalid Credientals")
     // }
 
-    }
+  }
+
+  useEffect(() => {
+    checkToken()
+  }, []);
 
   return (
     <ImageBackground source={image} style={styles.imageBackgroundContainer}>

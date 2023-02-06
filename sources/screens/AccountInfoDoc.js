@@ -7,6 +7,7 @@ import DoctorHomePage from './DoctorHomePage';
 import localStorage from '@react-native-async-storage/async-storage'
 import { styles } from './styles';
 import axios from "axios";
+import { baseUrl } from '../utilities/api/baseUrl';
 
 export default function AccountInfoDoc({navigation}) {
   const [name,setName] = useState();
@@ -19,24 +20,31 @@ export default function AccountInfoDoc({navigation}) {
   
 
 
-  const userid = localStorage.getItem("id");
-  console.log(userid)
+  const userid = localStorage.getItem("id").then(resp => resp).catch((err)=>console.log(err));
+
   const [user,setUser] = useState();
   useEffect(()=>{
-    axios.get("http://localhost:3000/doctor/"+(userid)).then((res)=>
-    {
-      setUser(res.data);
-      setSpeciality(res.data.speciality);
-      setTiming(res.data.timing);
-      setHospital(res.data.hospital);
-      setDays(res.data.days);
+
+    if(userid){
+
+      axios.get(`${baseUrl}/doctor/`+(userid)).then((res)=>
+      {
+        setUser(res.data);
+        setSpeciality(res.data.speciality);
+        setTiming(res.data.timing);
+        setHospital(res.data.hospital);
+        setDays(res.data.days);
+  
+  
+      })
+
+    }
 
 
-    })
-    },[]);
+    },[userid]);
 
     const updateRec = () =>{
-      axios.put("http://localhost:3000/doctor/record/"+(userid),
+      axios.put(`${baseUrl}/doctor/record/`+(userid),
       {name:name,email:email,password:password,speciality:speciality,timing:timing,hospital:hospital,days:days}).then((res)=>
       {
         console.log(res.data)
